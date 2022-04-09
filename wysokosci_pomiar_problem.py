@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+# skrypt po uruchomieniu usuwa pliki spoina_*.csv powstale wczesniej
+#SKOPIUJ PLIKI PO OBLICZENIACH
+import gom
+import os
+
+numer_linii=100
+numer_plaszczyzny=-25.0
+plaszczyzna_pocz=numer_plaszczyzny
+tablica=[]
+pom=''
+folder='D:/Users/Administrator/Desktop/spawanko/wysokosci_CZEKANKO_2'
+point=1
+k=0
+
+if(not os.path.exists(folder)):
+	os.mkdir(folder)
+
+for i in range(10):
+	numer_linii=100+11*i
+	sciezka=folder+'/spoina_'+str(i+1)+'.csv'
+	if(os.path.exists(sciezka)):
+		os.remove(sciezka)
+	file=open(sciezka,'a')
+	numer_plaszczyzny=plaszczyzna_pocz
+	numer_linii_1=100+11*i
+	for j in range(99):
+		numer_plaszczyzny=plaszczyzna_pocz+0.5*j
+		if(numer_plaszczyzny>=0):
+			temp2="Plane Z +"+str(numer_plaszczyzny)+"0 mm"
+		else:
+			temp2="Plane Z -"+str(abs(numer_plaszczyzny))+"0 mm"
+		numer_linii_2=numer_linii_1+110*j
+		numer_linii=numer_linii_2
+
+		for n in range(11):
+			point=1
+			while True:
+				try:
+					MCAD_ELEMENT=gom.script.primitive.create_point_by_line_intersection (
+						intersect_element={'projection_type': 'curve', 'target': gom.app.project.actual_elements[temp2]}, 
+						line=gom.app.project.actual_elements['Line '+str(numer_linii)], 
+						name='Point '+str(numer_linii)+'_h', 
+						point_number=point,
+						properties=gom.Binary ('eAHFl02MU1UUx38jiMPIiICiMUZfhlFHtExBRCzDhzggMXwYJIAm2nTa106lX7QPZwpBHjuXuDBuTdSwICFhYYwr2Zi4MLgwGuNK41ITDRsTTcD8z32vfZ3pjLAwvmYyt++ee87/fP3v6ZF6NXX02Q2z7NvzwuSewxxp5spBK5PZU/Grfi14pVlv+M2g7LdwzwBLGR5iiGGGhoFt7cncNPDSoQPeq/ViMJNr+t6m9Mat3r56UCzPes+5c9cuDfKMnYcLF9P27kK1ecYWCz/3Aa9dvXZpgIeBFRAWKNOiQYUcbbK0KHMan7NHr126g4eAuyGc7JE6QJ0CPq+vjzU9aJAGuAe4E8IWVXJUqPDVG79v1s4m4AEIfSr4VMnafpkSNar41AjI0sTnJKco26pA7qxQrACWQjhFnToV3rwsjXKdcDCGIGe6yvPUqXYUf7JLau4Flhm4gCZlapQY+0Hnl7qIhQz0hzpN2RzOUqZIllPUcBYanCIwqFcnbgnqWmB5D9QW09SZ4ZcPFlcwEL4rdBMgfxO+yp8cJcPXJGd+ubVP7GuegDJ1ahw7JzPrgTUQlsyLDRxiirfwTe4wPkV8Oy8/ffZbohU/Bd0CHz2rLO0jwMoeTLKa62is06TN158u7mCUzFGQqVAVOYVSmmWKHHlOUKJJ3cJf4LOU1B0EHoPwiDmSIcNeq6pNtt7f0bGbHC18e6v1XG0vWmUJ6PkvhWIMDIlsDMbeQjg99w1j+B/HJ1bPwy2NKp0mWSsZZ+PAN9Ib10KchC6GjcelcTVYR2kdlejNnec/ekLfH7fgz41S0lo16tJzO2VLHToE4W6z7xDFfbzSLKjXhUjruONqVjI+2evvfK73W0FyPbmRVzWTUvFIe9Y6284xY60TMM3pZcLhOZ9C+dp76lhH8rs/ZevWeCX2K1ktRdMdcONDWRTnDSaivDfafe99WdkHTEZeZ4D7O5LiwrY1kOOrfhZcUtxz+beVj0qLyHjtHERx3TYi2slaa6m+xYYFrn8hpHHU5/Nc1PsvA+v+VXWLE5Rp0DDVWabxyXWKME5Ni5PfJ42KdBWW41dkKSo3dhkj9gtyTFs32kkt86FHXR3nPRlFF1l392h9ZVyqFqbpOD4HyRm1Z39cCJy0zRJw86/FNa5eBnctIZxgmoAqFXagtQuY1rIjevWsexUgd1dtZ4SNjOBZHiWlNycjspU2h2CEcdOjOmpbtj1bKTk6EcuNk6dFixF2MMRyPPs0eBrPusnjDB4z6CrSmZTd2uIxcZokRdcpZox4G2zD42xH0wTjCQTCM97jpdJWoI2XkBK6uJOk1zdelWcZNpMmbTa6El0PM4g3mtEMsM18mrAounr3mKKUYENZWkcx8VFcu/q0L4Qxb6USZzOsI0+68ydMvbJdPRlaxsBiJMkJX5OSFX7KuKtBhjQNZvvsS2tgUrpnFpKSf0WL0UISqpA4jrGM/FUmNTEpqwU0l4kp5Hva9pNe6a2rvvhUXA3dUymTcJFvRv8L8+L6tkVUw0HespVKzGUZqhargmVNEevFlrL3ztvNffd7fe2noRv1frtzYx7XkvO2Ns+bW63GUfNXtT1m/ScOUn25ezruT82omjR0E6h61XdPMmrdEyMQmnGL7P8f4f45+K8i3MsIW26bEUaNOxxLBHiMdZhUnDfCU1a/WsdXjRu8xX/bKVqdaqJbPCPKjat+rWIGct9VXWI99617A/z0t+6VR4DhOTeW6xb9RlLt5Lckr775F6gG5V2rkneUWLps00R3Fvz5eWm53Vlwzbetm1tX/bpE2jdEc0u/oTtLwW4ERU9TtOOKyT+SyBWH3t9VhIP/AAnR0xIByac='))
+				except:
+					MCAD_ELEMENT=gom.script.primitive.create_point_by_line_intersection (
+						intersect_element={'projection_type': 'curve', 'target': gom.app.project.actual_elements[temp2]}, 
+						line=gom.app.project.actual_elements['Line '+str(numer_linii)], 
+						name='Point '+str(numer_linii)+'_h', 
+						point_number=point-1,
+						properties=gom.Binary ('eAHFl02MU1UUx38jiMPIiICiMUZfhlFHtExBRCzDhzggMXwYJIAm2nTa106lX7QPZwpBHjuXuDBuTdSwICFhYYwr2Zi4MLgwGuNK41ITDRsTTcD8z32vfZ3pjLAwvmYyt++ee87/fP3v6ZF6NXX02Q2z7NvzwuSewxxp5spBK5PZU/Grfi14pVlv+M2g7LdwzwBLGR5iiGGGhoFt7cncNPDSoQPeq/ViMJNr+t6m9Mat3r56UCzPes+5c9cuDfKMnYcLF9P27kK1ecYWCz/3Aa9dvXZpgIeBFRAWKNOiQYUcbbK0KHMan7NHr126g4eAuyGc7JE6QJ0CPq+vjzU9aJAGuAe4E8IWVXJUqPDVG79v1s4m4AEIfSr4VMnafpkSNar41AjI0sTnJKco26pA7qxQrACWQjhFnToV3rwsjXKdcDCGIGe6yvPUqXYUf7JLau4Flhm4gCZlapQY+0Hnl7qIhQz0hzpN2RzOUqZIllPUcBYanCIwqFcnbgnqWmB5D9QW09SZ4ZcPFlcwEL4rdBMgfxO+yp8cJcPXJGd+ubVP7GuegDJ1ahw7JzPrgTUQlsyLDRxiirfwTe4wPkV8Oy8/ffZbohU/Bd0CHz2rLO0jwMoeTLKa62is06TN158u7mCUzFGQqVAVOYVSmmWKHHlOUKJJ3cJf4LOU1B0EHoPwiDmSIcNeq6pNtt7f0bGbHC18e6v1XG0vWmUJ6PkvhWIMDIlsDMbeQjg99w1j+B/HJ1bPwy2NKp0mWSsZZ+PAN9Ib10KchC6GjcelcTVYR2kdlejNnec/ekLfH7fgz41S0lo16tJzO2VLHToE4W6z7xDFfbzSLKjXhUjruONqVjI+2evvfK73W0FyPbmRVzWTUvFIe9Y6284xY60TMM3pZcLhOZ9C+dp76lhH8rs/ZevWeCX2K1ktRdMdcONDWRTnDSaivDfafe99WdkHTEZeZ4D7O5LiwrY1kOOrfhZcUtxz+beVj0qLyHjtHERx3TYi2slaa6m+xYYFrn8hpHHU5/Nc1PsvA+v+VXWLE5Rp0DDVWabxyXWKME5Ni5PfJ42KdBWW41dkKSo3dhkj9gtyTFs32kkt86FHXR3nPRlFF1l392h9ZVyqFqbpOD4HyRm1Z39cCJy0zRJw86/FNa5eBnctIZxgmoAqFXagtQuY1rIjevWsexUgd1dtZ4SNjOBZHiWlNycjspU2h2CEcdOjOmpbtj1bKTk6EcuNk6dFixF2MMRyPPs0eBrPusnjDB4z6CrSmZTd2uIxcZokRdcpZox4G2zD42xH0wTjCQTCM97jpdJWoI2XkBK6uJOk1zdelWcZNpMmbTa6El0PM4g3mtEMsM18mrAounr3mKKUYENZWkcx8VFcu/q0L4Qxb6USZzOsI0+68ydMvbJdPRlaxsBiJMkJX5OSFX7KuKtBhjQNZvvsS2tgUrpnFpKSf0WL0UISqpA4jrGM/FUmNTEpqwU0l4kp5Hva9pNe6a2rvvhUXA3dUymTcJFvRv8L8+L6tkVUw0HespVKzGUZqhargmVNEevFlrL3ztvNffd7fe2noRv1frtzYx7XkvO2Ns+bW63GUfNXtT1m/ScOUn25ezruT82omjR0E6h61XdPMmrdEyMQmnGL7P8f4f45+K8i3MsIW26bEUaNOxxLBHiMdZhUnDfCU1a/WsdXjRu8xX/bKVqdaqJbPCPKjat+rWIGct9VXWI99617A/z0t+6VR4DhOTeW6xb9RlLt5Lckr775F6gG5V2rkneUWLps00R3Fvz5eWm53Vlwzbetm1tX/bpE2jdEc0u/oTtLwW4ERU9TtOOKyT+SyBWH3t9VhIP/AAnR0xIByac='))
+					break
+					
+				point+=1
+				gom.script.cad.delete_element(
+					elements=[gom.app.project.actual_elements['Point '+str(numer_linii)+'_h']], 
+					with_measuring_principle=True)
+			MCAD_ELEMENT=gom.script.inspection.create_distance_by_2_points (
+				point1=gom.app.project.actual_elements['Point '+str(numer_linii)+'_h'], 
+				point2=gom.app.project.actual_elements['AReferencyjny '+str(i+1)], 
+				properties=gom.Binary ('eAHFl01slFUUhp8KIlSQP0VjjH6WKhUdOiAiDuVHBKyGH4MNEBOdTGe+aUc6P8x82BZT+Vhp3Lkwbk38W5CQsDKudGPiCk0IxrjSuNTEhI2JRjDvuXNnvulMERbGaZreuffcc97znnPfeztWLaeOPbVphtH9z+7bf5Sxeq4UNTKZ/VNhOaxEL9WrtbAelcIG7tPHYlb0088K+lcAV9KjuUng+SOHgperxWg6Vw+DLenN24PRalQszQRPu32Xzi/lSdsPH36Wtrnv/g7rNlj4sxbYceLS+T4eAJZDXKBEgxpT5JglS4MSZwiZO3bp/G3cD9wJ8b4Oq0NUKRDyykbv6T6D1MddwO0QNyiTY4opvnn1961a2QLcC3HIFCFlsrZeYoIKZUIqRGSpE3KK05RsVCA3JxTLgcUQj1OlyhSvXZBHpU681ENQMm3neaqUW44/2SM3q4AlBi6iTokKEwz9oP2LHWMxfb2hTlKyhLOUKJLlNBVchBqniQzqVyM3BTUAsZSAKiAekNjPc+5TuToKbIB4zAJlyHCQkAnjqsAWm1FdHHvaWaXCC13eZDdGnRwlImbeVoqDgJBovA5YBnE3jsvvzj2ctGjT22CSKtP88sGNk+6L35GDEVCNEkmrBjlLRkXPWS3cOMTXJ0/UTOr4WYXZ6Bo4njBCNnGEcV4nNLujhBQJbb9qE3LQmlM1V6NYszQ/qy1tUbAKYjX+OEotyzg58pxkgjpVq3KBz1OKfRh4pKMYB6x5XRkOtnzsJUeD0GY1nu/tOWvgKnXOfS0UQ2BIFGOpBwjx5PwZhgg/9jvWdOGWR3Vonax1potx6Fv59QX2vLUxbDYpWONa0lhpnoTru899tEHfHzW+5rOUjFZuisHZ3YolIeiHeK/Fd4i8XKy0CJIUIdLYH+yKVTkke/WtLzS/HWTXURtlVTEr1VvesyYgto9pO6ERk5xZIhz+mCnXzl3HW5ZX/lCsm5Mvn1eyW4rmO+Lah4p4N6iCLZYPNFffe19RRoF9zawzwD0tS0nurPW8k8VeEVxR3OfCbysfkhdp/rp5iHzf1prqlrXToP6W6Ba4+qWQeta75bR5XF8E1v+r6wYnKVGjZq6zTBKSazWhL02DU98ng0rbRcuJi4rUbDf2mPD2ItkrzbXZpJdu6M2bwNc9yaJj1l1xGl8clquFbwPPz2FyJq7ZHxcCJ28zRFz/88Ye1yyBOxYRjzBJRJkpdqGxI0xjxZEiBnZ6RZAqF7GTATYzQGB1lJVmTjX1Ud4cggGGzY/6aNaqHdhIxdEObzdMngYNBthFP8sI7KfGEwR2mgLeJGAa3Xjak7LHgXRMmiZLKWyKaVPtGjsImGt5GmE4gUB4hjuyVNkKzBIkrITOnyT5DU1XlVmGraRJW4y2RTvDDNKNevOpscNyGjEWXb8HjDORUENFWk8x8SNe2/60LoRet1KJvRnWkyfd+hWmTtu2nwwNU2ApkuyEr86ENX7KtKtGhjQ1Znqsy2tkVrr0F7JSfkXjaCELdYjn0dsoX1VSDzNVtYCef1IK5Z629WRWmnXd53f5bmjvSpmFY77e/Fvo4vUNY1T3ed6qlUo8/zKUjauCVU2MdWJL2bzLdmvP9c5ce3los95rdT7nvpdctpWubG62GwctX/X2kJ0/aZD6y93T/nzqKayXhm4Cda/O3WMM2unxCIRm2Jj9/xnuXYP/iuFORdh2y4owaNrhVCIiYKilpNK8AR63/tXYXzXufS/920nR+lQvuhtXRLVx3a+RVyD3Xd0l1XPf2jfAT3/pXnkQWDHvxnKnxT/p89uSV1/3Baq37Z7VyTtKKq1/DJJvwZ+fkZdbfQuuvdy4vn31r4v+AY3o1J0BZp8='))
+
+			MCAD_ELEMENT=gom.script.inspection.inspect_dimension (
+				csys=gom.app.project.nominal_elements['system_global_coordinate_system'], 
+				distance_restriction='y', 
+				elements=[gom.app.project.actual_elements['Point '+str(numer_linii)+'_h?AReferencyjny '+str(i+1)]], 
+				properties=gom.Binary ('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'), 
+				type='distance')
+				
+			
+			wymiar=gom.app.project.inspection['Point '+str(numer_linii)+'_h?AReferencyjny '+str(i+1)+'.LY'].get('scalar_value')
+			tablica.append(abs(wymiar))
+			if pom!='':
+				pom=pom+','+str(tablica[n])
+			else:
+				pom=str(tablica[n])
+			gom.script.cad.delete_element(
+				elements=[gom.app.project.actual_elements['Point '+str(numer_linii)+'_h?AReferencyjny '+str(i+1)]], 
+				with_measuring_principle=True)
+			gom.script.cad.delete_element(
+				elements=[gom.app.project.actual_elements['Point '+str(numer_linii)+'_h']], 
+				with_measuring_principle=True)
+			
+			numer_linii=numer_linii+1
+			
+					
+		file.write(pom)
+		file.write('\n')
+		pom=''
+		tablica=[]
+	file.close()
+				
+			
+
